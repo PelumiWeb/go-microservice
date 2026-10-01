@@ -1,27 +1,20 @@
 package main
 
 import (
-	"fmt" 
-	"net/http"
+	"context"
+	"fmt"
+
+	"github.com/dreamsofcode-io/orders-api/application"
 )
 
 func main() {
+app := application.New()
 
-	server := &http.Server{
-		Addr: ":3000",
-		Handler: http.HandlerFunc(basicHandler),
-	}
+err := app.Start(context.TODO())
 
-	err := server.ListenAndServe()
-	if err != nil {
-		fmt.Println("Failed to losten to server", err)
-	}
+if err != nil {
+	fmt.Println("failed to start app:", err)
+}
 
 }
 
-func basicHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World"))
-
-	
-
-}
