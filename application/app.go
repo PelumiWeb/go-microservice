@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-redis/redis"
+	"github.com/redis/go-redis/v9"
 )
 
 
@@ -32,7 +32,7 @@ func (a *App) Start(ctx context.Context) error {
 		Handler: a.router,
 	}
 
-    err := a.rdb.Ping().Err()
+    err := a.rdb.Ping(ctx).Err()
 
 	if err != nil {
 		return fmt.Errorf("failed to connect to redis: %w", err)
