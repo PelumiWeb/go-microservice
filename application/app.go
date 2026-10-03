@@ -33,7 +33,7 @@ func New(config Config) *App {
 
 func (a *App) Start(ctx context.Context) error {
 	server := &http.Server{
-		Addr:  fmt.Sprintf(":%s", a.config.ServerPort),
+		Addr:  fmt.Sprintf(":%d", a.config.ServerPort),
 		Handler: a.router,
 	}
 
