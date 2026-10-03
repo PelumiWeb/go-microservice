@@ -102,12 +102,13 @@ func (r *RedisRepo) Update(ctx context.Context, order model.Order) error {
 		return fmt.Errorf("failed to encode order: %w", err)
 	}
 	key := orderIDKey(order.OrderId)
-	err = r.Client.SetNX(ctx, key, string(data), 0).Err()
+	updated, err := r.Client.SetXX(ctx, key, string(data), 0).Result()
 
-	if errors.Is(err, redis.Nil) {
-		return ErrNotExist
-	} else if err != nil {
+	if err != nil {
 		return fmt.Errorf("set order: %w", err)
+	}
+	if !updated {
+		return ErrNotExist
 	}
 
 	return  nil
